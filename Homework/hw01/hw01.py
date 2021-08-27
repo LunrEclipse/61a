@@ -15,9 +15,9 @@ def a_plus_abs_b(a, b):
     ['return f(a, b)']
     """
     if b < 0:
-        f = _____
+        f = sub
     else:
-        f = _____
+        f = add
     return f(a, b)
 
 
@@ -39,7 +39,7 @@ def two_of_three(x, y, z):
     >>> [type(x).__name__ for x in ast.parse(inspect.getsource(two_of_three)).body[0].body]
     ['Expr', 'Return']
     """
-    return _____
+    return min(x*x+y*y, x*x+z*z, y*y+z*z)
 
 
 def largest_factor(n):
@@ -53,12 +53,20 @@ def largest_factor(n):
     1
     """
     "*** YOUR CODE HERE ***"
+    largest = 1
+    for x in range(2, n-1):
+        if n % x == 0:
+            largest = x
+    return largest
 
 
-def limited(x, z, limit):
+def limited(x, y, limit, z):
     """Logic that is common to invert and change."""
     if x != 0:
-        return min(z, limit)
+        if(z == 0):
+            return min(1/x, limit)
+        else:
+            return min(abs(y - x) / x, limit)
     else:
         return limit
 
@@ -90,7 +98,7 @@ def invert_short(x, limit):
     >>> [type(x).__name__ for x in ast.parse(source).body[0].body]
     ['Expr', 'Return']
     """
-    return limited(x, 1 / x, limit)
+    return limited(x, 0, limit, 0)
 
 
 def change_short(x, y, limit):
@@ -118,7 +126,7 @@ def change_short(x, y, limit):
     >>> [type(x).__name__ for x in ast.parse(inspect.getsource(change_short)).body[0].body]
     ['Expr', 'Return']
     """
-    return limited(x, abs(y - x) / x, limit)
+    return limited(x, y, limit, 1)
 
 
 def hailstone(n):
@@ -137,6 +145,16 @@ def hailstone(n):
     7
     """
     "*** YOUR CODE HERE ***"
+    count = 1
+    print(n)
+    while(n != 1):
+        if(n % 2 == 0):
+            n = n // 2
+        else:
+            n = n * 3 +1
+        print(n)
+        count = count + 1
+    return count
 
 
 "*** YOUR CODE HERE ***"
