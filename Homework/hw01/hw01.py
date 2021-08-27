@@ -39,7 +39,7 @@ def two_of_three(x, y, z):
     >>> [type(x).__name__ for x in ast.parse(inspect.getsource(two_of_three)).body[0].body]
     ['Expr', 'Return']
     """
-    return min(x*x+y*y, x*x+z*z, y*y+z*z)
+    return min(x*x + y*y, x*x + z*z, y*y + z*z)
 
 
 def largest_factor(n):
