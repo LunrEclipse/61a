@@ -60,13 +60,10 @@ def largest_factor(n):
     return largest
 
 
-def limited(x, y, limit, z):
+def limited(x, z, limit):
     """Logic that is common to invert and change."""
-    if x != 0:
-        if(z == 0):
-            return min(1/x, limit)
-        else:
-            return min(abs(y - x) / x, limit)
+    if x!=0:
+        return min(z/x, limit)
     else:
         return limit
 
@@ -98,7 +95,7 @@ def invert_short(x, limit):
     >>> [type(x).__name__ for x in ast.parse(source).body[0].body]
     ['Expr', 'Return']
     """
-    return limited(x, 0, limit, 0)
+    return limited(x, 1, limit)
 
 
 def change_short(x, y, limit):
@@ -126,7 +123,7 @@ def change_short(x, y, limit):
     >>> [type(x).__name__ for x in ast.parse(inspect.getsource(change_short)).body[0].body]
     ['Expr', 'Return']
     """
-    return limited(x, y, limit, 1)
+    return limited(x, abs(y-x), limit)
 
 
 def hailstone(n):
