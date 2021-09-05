@@ -273,6 +273,7 @@ def make_averaged(original_function, trials_count=1000):
     3.0
     """
     # BEGIN PROBLEM 8
+    "*** YOUR CODE HERE ***"
     def average(*args):
         total = 0
         for x in range(0, trials_count):
@@ -346,7 +347,6 @@ def picky_piggy_strategy(score, opponent_score, cutoff=8, num_rolls=6):
         return 0
     else:
         return num_rolls
-    # Remove this line once implemented.
     # END PROBLEM 10
 
 
@@ -371,11 +371,23 @@ def final_strategy(score, opponent_score):
     *** YOUR DESCRIPTION HERE ***
     """
     # BEGIN PROBLEM 12
-    dif = 100 - score
-    if(dif <= 8):
-        return picky_piggy_strategy(score, opponent_score, dif)
-    else:
-        return picky_piggy_strategy(score, opponent_score, 7)
+    """
+    bestRoll = 0
+    max = picky_piggy(opponent_score)
+    if score + max == opponent_score:
+        max *= 2
+    averaged_dice = make_averaged(roll_dice, 1000)
+    for x in range(1, 11):
+        average = averaged_dice(x, six_sided)
+        if average + score == opponent_score:
+            average *= 2
+        if(average > max):
+            bestRoll = x
+            max = average
+    
+    return bestRoll
+    """
+    return 6
     # END PROBLEM 12
 
 ##########################

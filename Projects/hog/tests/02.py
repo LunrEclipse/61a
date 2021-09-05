@@ -1,6 +1,6 @@
 test = {
   'name': 'Question 2',
-  'points': 1,
+  'points': 3,
   'suites': [
     {
       'cases': [
