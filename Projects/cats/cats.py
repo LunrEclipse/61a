@@ -265,142 +265,96 @@ def minimum_mewtations(start, goal, limit):
     >>> minimum_mewtations("ckiteus", "kittens", big_limit) # ckiteus -> kiteus -> kitteus -> kittens
     3
     """
-
-    #print(start == goal)
-    if start == goal:  # Fill in the condition
+    if start == goal:
         return 0
-
-    elif limit == 0:  # Feel free to remove or add additional cases
+    elif start == '' or goal == '':
+        if abs(len(start) - len(goal)) > limit:
+            return limit + 1
+        else:
+            return abs(len(start) - len(goal))
+    elif limit == 0:
         return 1
-    
+    elif start[0] == goal[0]:
+        return minimum_mewtations(start[1:], goal[1:], limit)
+    else:
+        add = 1 + minimum_mewtations(start, goal[1:], limit-1)
+        remove = 1 + minimum_mewtations(start[1:], goal, limit-1)
+        substitute = 1 + minimum_mewtations(start[1:], goal[1:], limit-1)
+        return min(add, remove, substitute)
 
+    # #print(start == goal)
+    # if start == goal:  # Fill in the condition
+    #     return 0
+    # elif limit == 0:  # Feel free to remove or add additional cases
+    #     return 1    
     # else:
-    #     #print(start, goal)
-    #     if(len(start) == len(goal)): #substitue
+    #     temp = start[1:]
+    #     low = feline_flips(temp, goal, limit)
+    #     for x in range(1, len(start)):
+    #         cur = start[:x] + start[x+1:]
+    #         flips = feline_flips(cur, goal, limit)
+    #         if(flips < low):
+    #             temp = cur
+    #             low = flips
+    #     remove = temp
+    #     removeFlips = low          
+
+    #     if(len(start) == len(goal)):
+    #         #substitute
     #         x = 0
     #         while(start[x] == goal[x]):
     #             x += 1
-    #         substitue = start[:x] + goal[x] + start[x+1:]
-    #         add = start[:x] + goal[x] + start[x:]
-    #         if(x == len(start)):
-    #             remove = start[:len(start) - 1]
-    #         else:
-    #             remove = start[:x] + start[x+1:]
-
-    #         return min((1 + minimum_mewtations(add, goal, limit-1)), (1 + minimum_mewtations(remove, goal, limit-1)), (1+minimum_mewtations(substitue, goal, limit-1)))
-    #     elif(len(start) > len(goal)): #remove
-    #         x = 0
-    #         while(x < len(goal)-1 and start[x] == goal[x]):
-    #             x += 1
-    #         if(x == len(goal) -  1 and start[x+1] == goal[len(goal)-1]):
-    #             remove = start[:x] + start[x+1:]
-    #         elif(x == len(goal) - 1):
-    #             remove = start[:len(start) - 1]
-    #         else:
-    #             remove = start[:x] + start[x+1:]
-    #         return 1 + minimum_mewtations(remove, goal, limit-1)
-
-    #     else: #add
-    #         x = 0
-    #         while(x < len(start)-1 and start[x] == goal[x]):
-    #             x += 1
-    #         add = start[:x] + goal[x] + start[x:]
-    #         if len(add) == len(goal):
-    #             backAdd = start + goal[len(start)]
-    #             if(feline_flips(add, goal, limit) < feline_flips(backAdd, goal, limit)):
-    #                 return 1 + minimum_mewtations(add, goal, limit-1)
-    #             else:
-    #                 return 1 + minimum_mewtations(backAdd, goal, limit-1)
-    #         return 1 + minimum_mewtations(add, goal, limit-1)
-
-    
-    else:
-        #print(start, goal)
-
-        #remove
-        # temp = start[:len(start)-1]
-        # low = feline_flips(temp, goal, limit)
-        # print(temp, low)
-        # for x in range(0, len(start)-1):
-        #     cur = start[:x] + start[x+1:]
-        #     flips = feline_flips(cur, goal, limit)
-        #     print(cur, flips)
-        #     if(flips < low):
-        #         temp = cur
-        #         low = flips
-        # remove = temp
-        # removeFlips = low
-        temp = start[1:]
-        low = feline_flips(temp, goal, limit)
-        for x in range(1, len(start)):
-            cur = start[:x] + start[x+1:]
-            flips = feline_flips(cur, goal, limit)
-            if(flips < low):
-                temp = cur
-                low = flips
-        remove = temp
-        removeFlips = low          
-
-        if(len(start) == len(goal)):
-            #substitute
-            x = 0
-            while(start[x] == goal[x]):
-                x += 1
-            substitute = start[:x] + goal[x] + start[x+1:]
-            subFlips = feline_flips(substitute, goal, limit)
-            #add
-            temp = start + goal[len(goal)-1]
-            low = feline_flips(temp, goal, limit)
-            for x in range(0, len(start)-1):
-                cur = start[:x] + goal[x] + start[x:]
-                flips = feline_flips(cur, goal, limit)
-                if(flips < low):
-                    temp = cur
-                    low = flips
-            add = temp
-            addFlips = low
+    #         substitute = start[:x] + goal[x] + start[x+1:]
+    #         subFlips = feline_flips(substitute, goal, limit)
+    #         #add
+    #         temp = start + goal[len(goal)-1]
+    #         low = feline_flips(temp, goal, limit)
+    #         for x in range(0, len(start)-1):
+    #             cur = start[:x] + goal[x] + start[x:]
+    #             flips = feline_flips(cur, goal, limit)
+    #             if(flips < low):
+    #                 temp = cur
+    #                 low = flips
+    #         add = temp
+    #         addFlips = low
             
-            #return min((1 + minimum_mewtations(add, goal, limit-1)), (1 + minimum_mewtations(remove, goal, limit-1)), (1+minimum_mewtations(substitute, goal, limit-1)))
-            # print("Add:", add, addFlips)
-            # print("Sub:", substitute, subFlips)
-            # print("Remove:", remove, removeFlips)
-            if(abs(addFlips-removeFlips) <= 1 and abs(addFlips-subFlips) <= 1):
-                return min((1 + minimum_mewtations(add, goal, limit-1)), (1 + minimum_mewtations(remove, goal, limit-1)), (1+minimum_mewtations(substitute, goal, limit-1)))
-            if(addFlips < subFlips and addFlips < removeFlips):
-                if(abs(addFlips-removeFlips) <= 1):
-                    return min((1 + minimum_mewtations(add, goal, limit-1)), (1 + minimum_mewtations(remove, goal, limit-1)))
-                elif(abs(addFlips-subFlips) <= 1):
-                    return min((1 + minimum_mewtations(add, goal, limit-1)), (1+minimum_mewtations(substitute, goal, limit-1)))
-                else:
-                    return 1 + minimum_mewtations(add, goal, limit-1)
-            elif(removeFlips < addFlips and removeFlips < removeFlips):
-                if(abs(removeFlips-addFlips) <= 1):
-                    return min((1 + minimum_mewtations(remove, goal, limit-1)), (1 + minimum_mewtations(add, goal, limit-1)))
-                elif(abs(removeFlips-subFlips) <= 1):
-                    return min((1 + minimum_mewtations(remove, goal, limit-1)), (1 + minimum_mewtations(substitute, goal, limit-1)))
-                else:
-                    return 1 + minimum_mewtations(remove, goal, limit-1)
-            else:
-                if(abs(subFlips-removeFlips) <= 1):
-                    return min((1 + minimum_mewtations(substitute, goal, limit-1)), (1 + minimum_mewtations(remove, goal, limit-1)))
-                elif(abs(addFlips-addFlips) <= 1):
-                    return min((1 + minimum_mewtations(substitute, goal, limit-1)), (1 + minimum_mewtations(add, goal, limit-1)))
-                else:
-                    return 1 + minimum_mewtations(substitute, goal, limit-1)
-        elif(len(start) > len(goal)):         
-            return 1 + minimum_mewtations(remove, goal, limit-1)
-        else:
-            #add
-            temp = start + goal[len(goal)-1]
-            low = feline_flips(temp, goal, limit)
-            for x in range(0, len(goal)-1):
-                cur = start[:x] + goal[x] + start[x:]
-                flips = feline_flips(cur, goal, limit)
-                if(flips < low):
-                    temp = cur
-                    low = flips
-            add = temp
-            return (1 + minimum_mewtations(add, goal, limit-1))
+    #         if(abs(addFlips-removeFlips) <= 1 and abs(addFlips-subFlips) <= 1):
+    #             return min((1 + minimum_mewtations(add, goal, limit-1)), (1 + minimum_mewtations(remove, goal, limit-1)), (1+minimum_mewtations(substitute, goal, limit-1)))
+    #         if(addFlips < subFlips and addFlips < removeFlips):
+    #             if(abs(addFlips-removeFlips) <= 1):
+    #                 return min((1 + minimum_mewtations(add, goal, limit-1)), (1 + minimum_mewtations(remove, goal, limit-1)))
+    #             elif(abs(addFlips-subFlips) <= 1):
+    #                 return min((1 + minimum_mewtations(add, goal, limit-1)), (1+minimum_mewtations(substitute, goal, limit-1)))
+    #             else:
+    #                 return 1 + minimum_mewtations(add, goal, limit-1)
+    #         elif(removeFlips < addFlips and removeFlips < removeFlips):
+    #             if(abs(removeFlips-addFlips) <= 1):
+    #                 return min((1 + minimum_mewtations(remove, goal, limit-1)), (1 + minimum_mewtations(add, goal, limit-1)))
+    #             elif(abs(removeFlips-subFlips) <= 1):
+    #                 return min((1 + minimum_mewtations(remove, goal, limit-1)), (1 + minimum_mewtations(substitute, goal, limit-1)))
+    #             else:
+    #                 return 1 + minimum_mewtations(remove, goal, limit-1)
+    #         else:
+    #             if(abs(subFlips-removeFlips) <= 1):
+    #                 return min((1 + minimum_mewtations(substitute, goal, limit-1)), (1 + minimum_mewtations(remove, goal, limit-1)))
+    #             elif(abs(addFlips-addFlips) <= 1):
+    #                 return min((1 + minimum_mewtations(substitute, goal, limit-1)), (1 + minimum_mewtations(add, goal, limit-1)))
+    #             else:
+    #                 return 1 + minimum_mewtations(substitute, goal, limit-1)
+    #     elif(len(start) > len(goal)):         
+    #         return 1 + minimum_mewtations(remove, goal, limit-1)
+    #     else:
+    #         #add
+    #         temp = start + goal[len(goal)-1]
+    #         low = feline_flips(temp, goal, limit)
+    #         for x in range(0, len(goal)-1):
+    #             cur = start[:x] + goal[x] + start[x:]
+    #             flips = feline_flips(cur, goal, limit)
+    #             if(flips < low):
+    #                 temp = cur
+    #                 low = flips
+    #         add = temp
+    #         return (1 + minimum_mewtations(add, goal, limit-1))
 
     
 
