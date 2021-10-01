@@ -126,16 +126,14 @@ def play(strategy0, strategy1, score0=0, score1=0, dice=six_sided,
     who = 0  # Who is about to take a turn, 0 (first) or 1 (second)
     # BEGIN PROBLEM 5
     "*** YOUR CODE HERE ***"
-    while score0 < goal and score1 < goal:
+    while max(score0, score1) < goal:
         if who == 0:
             score0 += take_turn(strategy0(score0, score1), score1, dice, goal)
             score0 += hog_pile(score0, score1)
         else:
             score1 += take_turn(strategy1(score1, score0), score0, dice, goal)
             score1 += hog_pile(score1, score0)
-        who += 1
-        if who == 2:
-            who = 0
+        who = next_player(who)
         say = say(score0, score1)
     # END PROBLEM 5
     # (note that the indentation for the problem 6 prompt (***YOUR CODE HERE***) might be misleading)
@@ -302,7 +300,7 @@ def max_scoring_num_rolls(dice=six_sided, trials_count=1000):
         if(average > max):
             bestRoll = x
             max = average
-    print(bestRoll)
+    return bestRoll
     # END PROBLEM 9
 
 
