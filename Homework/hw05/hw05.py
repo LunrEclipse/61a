@@ -136,8 +136,8 @@ def generate_preorder(t):
         yield t.label
     else:
         yield t.label
-        for i in range(0, len(t.branches)):
-            yield from preorder(t.branches[i])
+        for b in t.branches:
+            yield from generate_preorder(b)
 
 
 def remainders_generator(m):
