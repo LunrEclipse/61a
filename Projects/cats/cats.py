@@ -101,46 +101,15 @@ def accuracy(typed, reference):
     reference_words = split(reference)
     # BEGIN PROBLEM 3
     "*** YOUR CODE HERE ***"
-    if(len(typed) == 0 and len(reference) != 0):
+    if(len(typed_words) == 0 and len(reference_words) == 0):
+        return 100.0
+    if(len(typed_words) == 0 or len(reference_words) == 0):
         return 0.0
-    if(len(typed) != 0 and len(reference) == 0):
-        return 0.0
-
-    typedList = []
-    referenceList = []
-    
-    hasSpace = False
-    if " " in typed:
-        hasSpace = True
-    while(hasSpace):
-        temp = typed.index(" ")
-        typedList.append(typed[:temp])
-        typed = typed[temp+1:]
-        typed = typed.strip()
-        if " " not in typed:
-            hasSpace = False
-    typedList.append(typed)
-
-    hasSpace = False
-    if " " in reference:
-        hasSpace = True
-    while(hasSpace):
-        temp = reference.index(" ")
-        referenceList.append(reference[:temp])
-        reference = reference[temp+1:]
-        reference = reference.strip()
-        if " " not in reference:
-            hasSpace = False
-    referenceList.append(reference)
-
-    #print(typedList)
-    #print(referenceList)
-
     correct = 0
-    for i in range(0, len(referenceList)):
-        if i < len(typedList) and referenceList[i] == typedList[i]:
+    for i in range(min(len(typed_words), len(reference_words))):
+        if reference_words[i] == typed_words[i]:
             correct += 1
-    return correct / len(typedList) * 100
+    return correct / len(typed_words) * 100
     # END PROBLEM 3
 
 
@@ -190,14 +159,9 @@ def autocorrect(typed_word, valid_words, diff_function, limit):
     if typed_word in valid_words:
         return typed_word
     
-    lowest = diff_function(typed_word, valid_words[0], limit)
-    word = valid_words[0]
-    for x in range(1, len(valid_words)):
-        cur = diff_function(typed_word, valid_words[x], limit)
-        if cur < lowest:
-            lowest = cur
-            word = valid_words[x]
-    if(lowest > limit):
+
+    word = min(valid_words, key = lambda x: diff_function(typed_word, x, limit))
+    if(diff_function(typed_word, word, limit) > limit):
         return typed_word
     else:
         return word

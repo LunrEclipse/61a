@@ -512,6 +512,7 @@ class Bee(Insect):
     is_waterproof = True
     scare_length = 0
     slow_length = 0
+    hasScared = False
 
     def sting(self, ant):
         """Attack an ANT, reducing its health by 1."""
@@ -538,7 +539,10 @@ class Bee(Insect):
         # Extra credit: Special handling for bee direction
         if(self.slow_length > 0):
             if(gamestate.time % 2 == 0):
-                self.normalAction(gamestate)
+                if(self.scare_length > 0):
+                    self.scareAction(gamestate)
+                else:
+                    self.normalAction(gamestate)
             self.slow_length -= 1
         elif(self.scare_length > 0 ):
             self.scareAction(gamestate)
@@ -559,7 +563,7 @@ class Bee(Insect):
                         self.sting(self.place.ant)
             elif self.health > 0 and destination is not None:
                 self.move_to(destination)
-        self.scare_length -= 1
+                self.scare_length -= 1
                 
     def add_to(self, place):
         place.bees.append(self)
@@ -573,7 +577,7 @@ class Bee(Insect):
         """Slow the bee for a further LENGTH turns."""
         # BEGIN Problem EC
         "*** YOUR CODE HERE ***"
-        self.scare_length += length
+        self.slow_length += length
         # END Problem EC
 
     def scare(self, length):
@@ -582,7 +586,9 @@ class Bee(Insect):
         go backwards LENGTH times.
         """
         # BEGIN Problem EC
-        self.scare_length += length
+        if(not self.hasScared):
+            self.scare_length += length
+            self.hasScared = True
         "*** YOUR CODE HERE ***"
         # END Problem EC
 
@@ -620,7 +626,7 @@ class SlowThrower(ThrowerAnt):
     name = 'Slow'
     food_cost = 4
     # BEGIN Problem EC
-    implemented = False   # Change to True to view in the GUI
+    implemented = True   # Change to True to view in the GUI
     # END Problem EC
 
     def throw_at(self, target):
@@ -634,12 +640,14 @@ class ScaryThrower(ThrowerAnt):
     name = 'Scary'
     food_cost = 6
     # BEGIN Problem EC
-    implemented = False   # Change to True to view in the GUI
+    implemented = True   # Change to True to view in the GUI
     # END Problem EC
 
     def throw_at(self, target):
         # BEGIN Problem EC
         "*** YOUR CODE HERE ***"
+        if target:
+            target.scare(2)
         # END Problem EC
 
 
