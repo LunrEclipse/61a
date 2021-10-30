@@ -5,7 +5,7 @@ test = {
     {
       'cases': [
         {
-          'answer': '283f29564937de236873fd9ad423ca2b',
+          'answer': 'Linear',
           'choices': [
             'Constant',
             'Logarithmic',
@@ -15,7 +15,7 @@ test = {
             'None of these'
           ],
           'hidden': False,
-          'locked': True,
+          'locked': False,
           'multiline': False,
           'question': 'The is_palindrome function runs in ____ time in the length of its input.'
         }
